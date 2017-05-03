@@ -119,7 +119,7 @@ public class DataSyncTasks {
     private ArrayList<String> getColumnNameValuesFromResult(SyncInfo info, CustomResultSet rs) throws SQLException {
         ArrayList<String> values = new ArrayList<>();
         for (ColumnConfig column : info.getColumns()) {
-            values.add(String.format("%s = %s", column.getDestination(), rs.get(column.getSource())));
+            values.add(String.format("%s = '%s'", column.getDestination(), rs.get(column.getSource())));
         }
         return values;
     }
