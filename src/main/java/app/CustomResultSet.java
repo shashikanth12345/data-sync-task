@@ -2,6 +2,7 @@ package app;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,5 +47,22 @@ public class CustomResultSet {
 
     public Object get(String columnLabel) {
         return resultMap.get(columnLabel);
+    }
+
+    public ArrayList<String> getValuesToInsert(SyncInfo info) throws SQLException {
+        ArrayList<String> values = new ArrayList<>();
+        for (ColumnConfig column : info.getColumns()) {
+            if (column.isShouldSync()) {
+                String value;
+                if (column.isShouldSource()) {
+                    value = String.format("%s", get(column.getSource()));
+                } else {
+                    value = column.getDefaultValue();
+                }
+
+                values.add((String.format("'%s'", value)));
+            }
+        }
+        return values;
     }
 }

@@ -1,6 +1,7 @@
 package app.config;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SyncInfo {
     private String sourceTable;
@@ -29,5 +30,13 @@ public class SyncInfo {
 
     public void setDestinationTable(String destinationTable) {
         this.destinationTable = destinationTable;
+    }
+
+    public List<String> getSourceColumnsToReadFrom() {
+        return columns.stream().filter(ColumnConfig::isShouldSource).map(ColumnConfig::getSource).collect(Collectors.toList());
+    }
+
+    public List<String> getDestinationColumnsToInsertTo() {
+        return columns.stream().filter(ColumnConfig::isShouldSync).map(ColumnConfig::getDestination).collect(Collectors.toList());
     }
 }
