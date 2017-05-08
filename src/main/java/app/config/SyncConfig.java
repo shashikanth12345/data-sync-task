@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@ConfigurationProperties(prefix = "sync")
+@ConfigurationProperties("sync")
 public class SyncConfig {
     private List<SyncInfo> info;
 

@@ -4,6 +4,8 @@ spring:
       url: jdbc:postgresql://localhost:5432/devdb
       username: postgres
       password: postgres
+    profiles:
+      active: "ml-to-ms"
 
 flyway:
   user: postgres
@@ -14,14 +16,55 @@ flyway:
   url: jdbc:postgresql://localhost:5432/devdb
   locations: db/migration/ddl,db/migration/seed
 
+state: ap
+
+---
 source-schemas: kurnool
+destination-schema: public
 
-destination-schemas: public
-
+spring:
+  profiles: ml-to-ms
 sync:
   info:
     - sourceTable: eg_boundary_type
       destinationTable: eg_boundary_type
+      columns:
+        - source: id
+          destination: id
+          type: Integer
+          shouldSource: True
+          shouldSync: True
+
+        - source: name
+          destination: name
+          Type: String
+          shouldSource: True
+          shouldSync: True
+
+    - sourceTable: eg_boundary
+      destinationTable: eg_boundary
+      columns:
+        - source: id
+          destination: id
+          type: Integer
+          shouldSource: True
+          shouldSync: True
+
+        - source: name
+          destination: name
+          type: String
+          shouldSource: True
+          shouldSync: True
+
+---
+source-schemas: microservice
+destination-schema: public
+spring:
+  profiles: ms-to-ml
+sync:
+  info:
+    - sourceTable: eg_boundary_fubar
+      destinationTable: eg_boundary_type_fubar
       columns:
         - source: id
           destination: id
@@ -31,8 +74,8 @@ sync:
           destination: name
           Type: String
 
-    - sourceTable: eg_boundary
-      destinationTable: eg_boundary
+    - sourceTable: eg_boundary_fubar
+      destinationTable: eg_boundary_fubar
       columns:
         - source: id
           destination: id

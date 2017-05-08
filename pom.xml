@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.springframework</groupId>
-	<artifactId>scheduling-tasks</artifactId>
+	<artifactId>data-sync-task</artifactId>
 	<version>0.0.1</version>
 
 	<parent>
