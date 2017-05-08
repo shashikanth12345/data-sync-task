@@ -45,11 +45,11 @@ public class DataSyncTask {
         for (String sourceSchema : sourceSchemas) {
             for (SyncInfo info : syncConfig.getInfo()) {
                 String query = String.format("SELECT %s from %s.%s WHERE lastmodifieddate >=?",
-                        String.join(",", info.getSourceColumnsToReadFrom()), sourceSchema, info.getSourceTable());
-
+                        String.join(",", info.getSourceColumnNamesToReadFrom()), sourceSchema, info.getSourceTable());
+                log.info(query);
                 jdbcTemplate.query(
                         query, new Object[]{epoch},
-                        (rs, rowNum) -> new CustomResultSet(rs, info.getColumns())
+                        (rs, rowNum) -> new CustomResultSet(rs, info.getSourceColumnConfigsToReadFrom())
                 ).forEach(res -> {
                     try {
                         new RowSyncer(info, res, sourceSchema, destinationSchema, state, jdbcTemplate).insertOrUpdate();
